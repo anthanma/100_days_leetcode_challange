@@ -1,35 +1,56 @@
 class Solution {
-    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-
-        Arrays.sort(candidates);
-        List<List<Integer>> ans = new ArrayList<>();
-
-        fun(candidates, ans, new ArrayList<>(), target, 0);
-
+    //answer from me 
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> ans= new ArrayList<>();
+        List<Integer> temp=new ArrayList<>();
+        fun(ans,temp,candidates,target,0,0);
         return ans;
     }
-
-    public void fun(int[] arr, List<List<Integer>> ans,
-                    List<Integer> temp, int target, int i) {
-
-        if(target == 0){
+    public void fun(List<List<Integer>> ans ,List<Integer> temp,int [] arr,int target, int i,int currentsum ){
+        // base case
+        if(currentsum>target || i>=arr.length){
+            return;
+        }
+        if(currentsum==target){
             ans.add(new ArrayList<>(temp));
             return;
         }
-
-        if(i >= arr.length || target < 0)
-            return;
-
-        // pick
+        //recursive step
+        //pick
         temp.add(arr[i]);
-        fun(arr, ans, temp, target - arr[i], i + 1);
-        temp.remove(temp.size() - 1);
+        fun(ans,temp,arr,target,i,currentsum+arr[i]);
+        
+        //not pick
+        temp.remove(temp.size()-1);
+        fun(ans,temp,arr,target,i+1,currentsum);
 
-        // skip duplicates
-        while(i < arr.length - 1 && arr[i] == arr[i + 1])
-            i++;
 
-        // not pick
-        fun(arr, ans, temp, target, i + 1);
     }
 }
+//ans from striver
+/*class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> ans= new ArrayList<>();
+        
+        fun(ans,candidates,target,new ArrayList<>(),0);
+        return ans;
+    }
+    public void fun(List<List<Integer>> ans,int [] nums,int target,List<Integer> temp,int i){
+        //base case 
+        if(i>=nums.length){
+            if(target==0){
+                ans.add(new ArrayList<>(temp));
+            }
+            return;
+        }
+        // recursive step
+        //pick
+        if(target>=nums[i]){
+            temp.add(nums[i]);
+            fun(ans,nums,target-nums[i],temp,i);
+        //not picking 
+             temp.remove(temp.size()-1);
+        }
+        fun(ans,nums,target,temp,i+1);
+    }
+}*/
